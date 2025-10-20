@@ -1,27 +1,28 @@
-#include <unistd.h> // Required for putchar
-
+#include <stdio.h>
+/**
+ * main - prints all the numbers of base 16 in lowercase
+ *
+ * Return: Always 0 (Success)
+ **/
 int main(void)
 {
-    char c;
+	int num = 0;
 
-    // Print numbers 0-9
-    c = '0';
-    while (c <= '9')
-    {
-        putchar(c);
-        c++;
-    }
+	while (num < 10)
+	{
+		putchar(num + '0');
+		num++;
+	}
 
-    // Print letters a-f
-    c = 'a';
-    while (c <= 'f')
-    {
-        putchar(c);
-        c++;
-    }
+	num = 0;
 
-    // Print a newline character
-    putchar('\n');
+	while (num < 6)
+	{
+		putchar(num + 'a');
+		num++;
+	}
 
-    return (0);
+	putchar('\n');
+
+	return (0);
 }
