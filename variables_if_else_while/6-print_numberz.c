@@ -1,22 +1,18 @@
+#include <unistd.h>
 #include <stdio.h>
-
 /**
- * main - Entry point
+ * main - Prints numbers x10
  *
- * Return: Always 0 (Success)
+ * Return: 0
  */
 int main(void)
 {
-	int num = 0;
+	int digit;
 
-	while (num <= 9)
+	for (digit = 0; digit <= 9; digit++)
 	{
-		putchar(num + 48)
-			num++;
+		putchar(digit + '0');
 	}
-
 	putchar('\n');
-
 	return (0);
 }
-
