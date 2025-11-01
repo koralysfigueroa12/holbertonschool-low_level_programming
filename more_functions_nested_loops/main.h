@@ -12,6 +12,5 @@ void print_diagonal(int n);
 void print_square(int size);
 void print_triangle(int size);
 int _putchar(char c);
-
+void print_times_table(int n);
 #endif /* MAIN_H */
-
