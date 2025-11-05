@@ -8,8 +8,8 @@
  *
  * Return: pointer to a newly allocated space in memory which contains
  * the contents of s1, followed by the contents of s2, and null terminated
- * If NULL is passed, treat it as an empty string
- * Return: NULL on failure
+ * If NULL is passed, treat it as an empty string.
+ * NULL on failure.
  */
 char *str_concat(char *s1, char *s2)
 {
@@ -26,7 +26,7 @@ char *str_concat(char *s1, char *s2)
 	while (s2[len2] != '\0')
 		len2++;
 
-	concat = malloc(sizeof(char) * (len1 + len2 + 1));
+	concat = malloc((len1 + len2 + 1) * sizeof(char));
 	if (concat == NULL)
 		return (NULL);
 
