@@ -2,42 +2,69 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+typedef struct print
+{
+	char *symbol;
+	void (*f)(va_list args);
+} print_t;
+
+static void print_char(va_list args)
+{
+	printf("%c", va_arg(args, int));
+}
+
+static void print_int(va_list args)
+{
+	printf("%d", va_arg(args, int));
+}
+
+static void print_float(va_list args)
+{
+	printf("%f", va_arg(args, double));
+}
+
+static void print_string(va_list args)
+{
+	char *s = va_arg(args, char *);
+	if (s == NULL)
+		s = "(nil)";
+	printf("%s", s);
+}
+
 /**
- * print_all - prints anything based on the format string
- * @format: list of types of arguments passed to the function
- * 'c' = char, 'i' = int, 'f' = float, 's' = char *
- *
- * Return: void
+ * print_all - prints anything based on format string
+ * @format: list of types: c = char, i = int, f = float, s = string
  */
 void print_all(const char * const format, ...)
 {
-	va_list ap;
-	unsigned int i = 0;
-	char *str;
+	va_list args;
+	unsigned int i = 0, j;
 	char *sep = "";
+	print_t funcs[] = {
+		{"c", print_char},
+		{"i", print_int},
+		{"f", print_float},
+		{"s", print_string},
+		{NULL, NULL}
+	};
 
-	va_start(ap, format);
-
+	va_start(args, format);
 	if (format != NULL)
 		while (format[i] != '\0')
 		{
-			if (format[i] == 'c')
-				printf("%s%c", sep, va_arg(ap, int));
-			if (format[i] == 'i')
-				printf("%s%d", sep, va_arg(ap, int));
-			if (format[i] == 'f')
-				printf("%s%f", sep, va_arg(ap, double));
-			if (format[i] == 's')
+			j = 0;
+			while (funcs[j].symbol)
 			{
-				str = va_arg(ap, char *);
-				if (str == NULL)
-					str = "(nil)";
-				printf("%s%s", sep, str);
+				if (format[i] == *(funcs[j].symbol))
+				{
+					printf("%s", sep);
+					funcs[j].f(args);
+					sep = ", ";
+				}
+				j++;
 			}
-			sep = ", ";
 			i++;
 		}
-
-	va_end(ap);
+	va_end(args);
 	printf("\n");
 }
