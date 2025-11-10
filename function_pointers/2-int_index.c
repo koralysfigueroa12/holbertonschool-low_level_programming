@@ -7,7 +7,8 @@
  * @cmp: pointer to the comparison function
  *
  * Return: index of the first element for which cmp returns non-zero,
- *         or -1 if no element matches or on error (size <= 0, array or cmp NULL)
+ *         or -1 if no element matches or on error
+ *         (size <= 0, array or cmp NULL)
  */
 int int_index(int *array, int size, int (*cmp)(int))
 {
