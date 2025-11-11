@@ -1,70 +1,46 @@
 #include "variadic_functions.h"
-#include <stdarg.h>
 #include <stdio.h>
-
-typedef struct print
-{
-	char *symbol;
-	void (*f)(va_list args);
-} print_t;
-
-static void print_char(va_list args)
-{
-	printf("%c", va_arg(args, int));
-}
-
-static void print_int(va_list args)
-{
-	printf("%d", va_arg(args, int));
-}
-
-static void print_float(va_list args)
-{
-	printf("%f", va_arg(args, double));
-}
-
-static void print_string(va_list args)
-{
-	char *s = va_arg(args, char *);
-	if (s == NULL)
-		s = "(nil)";
-	printf("%s", s);
-}
+#include <stdarg.h>
 
 /**
- * print_all - prints anything based on format string
- * @format: list of types: c = char, i = int, f = float, s = string
+ * print_all - prints anything
+ * @format: list of types of arguments passed to the function
  */
 void print_all(const char * const format, ...)
 {
 	va_list args;
-	unsigned int i = 0, j;
-	char *sep = "";
-	print_t funcs[] = {
-		{"c", print_char},
-		{"i", print_int},
-		{"f", print_float},
-		{"s", print_string},
-		{NULL, NULL}
-	};
+	unsigned int i = 0;
+	char *str, *sep = "";
 
 	va_start(args, format);
-	if (format != NULL)
-		while (format[i] != '\0')
+
+	while (format && format[i])
+	{
+		switch (format[i])
 		{
-			j = 0;
-			while (funcs[j].symbol)
-			{
-				if (format[i] == *(funcs[j].symbol))
-				{
-					printf("%s", sep);
-					funcs[j].f(args);
-					sep = ", ";
-				}
-				j++;
-			}
-			i++;
+			case 'c':
+				printf("%s%c", sep, va_arg(args, int));
+				break;
+			case 'i':
+				printf("%s%d", sep, va_arg(args, int));
+				break;
+			case 'f':
+				printf("%s%f", sep, va_arg(args, double));
+				break;
+			case 's':
+				str = va_arg(args, char *);
+				if (str == NULL)
+					str = "(nil)";
+				printf("%s%s", sep, str);
+				break;
+			default:
+				i++;
+				continue;
 		}
-	va_end(args);
+		sep = ", ";
+		i++;
+	}
+
 	printf("\n");
+	va_end(args);
 }
