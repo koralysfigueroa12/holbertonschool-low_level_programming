@@ -3,6 +3,14 @@
 
 #include <stdlib.h>
 
+/**
+ * struct list_s - singly linked list node
+ * @str: string (malloc'ed)
+ * @len: length of the string
+ * @next: pointer to the next node
+ *
+ * Description: node structure for singly linked list project
+ */
 typedef struct list_s
 {
 	char *str;
