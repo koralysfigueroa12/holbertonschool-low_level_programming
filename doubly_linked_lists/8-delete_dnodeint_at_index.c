@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 /**
- * delete_dnodeint_at_index - deletes the node at index of a dlistint_t list
- * @head: pointer to pointer to head of list
- * @index: index of the node to delete
+ * delete_dnodeint_at_index - deletes the node at a given index
+ * @head: pointer to pointer to head of the list
+ * @index: index of the node to delete, starting at 0
  *
  * Return: 1 if successful, -1 if it failed
  */
