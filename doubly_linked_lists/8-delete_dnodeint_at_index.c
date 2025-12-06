@@ -3,43 +3,54 @@
 
 /**
  * delete_dnodeint_at_index - deletes the node at index of a dlistint_t list
- * @head: pointer to pointer to the head of the list
+ * @head: pointer to pointer to head of list
  * @index: index of the node to delete (starting at 0)
+ *
  * Return: 1 if it succeeded, -1 if it failed
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-    dlistint_t *tmp;
-    unsigned int i;
+	dlistint_t *tmp;
+	unsigned int len = 0, i;
+	dlistint_t *cur;
 
-    if (!head || !*head)
-        return (-1);
+	if (head == NULL || *head == NULL)
+		return (-1);
 
-    tmp = *head;
+	/* compute length */
+	cur = *head;
+	while (cur)
+	{
+		len++;
+		cur = cur->next;
+	}
 
-    /* delete first node */
-    if (index == 0)
-    {
-        *head = tmp->next;
-        if (*head)
-            (*head)->prev = NULL;
-        free(tmp);
-        return (1);
-    }
+	/* index out of range */
+	if (index >= len)
+		return (-1);
 
-    /* traverse to the node at index */
-    for (i = 0; tmp != NULL && i < index; i++)
-        tmp = tmp->next;
+	/* delete head */
+	if (index == 0)
+	{
+		tmp = *head;
+		*head = tmp->next;
+		if (*head)
+			(*head)->prev = NULL;
+		free(tmp);
+		return (1);
+	}
 
-    if (!tmp)
-        return (-1);
+	/* find node at index */
+	cur = *head;
+	for (i = 0; i < index; i++)
+		cur = cur->next;
 
-    /* fix pointers */
-    if (tmp->prev)
-        tmp->prev->next = tmp->next;
-    if (tmp->next)
-        tmp->next->prev = tmp->prev;
+	/* relink neighbors */
+	if (cur->prev)
+		cur->prev->next = cur->next;
+	if (cur->next)
+		cur->next->prev = cur->prev;
 
-    free(tmp);
-    return (1);
+	free(cur);
+	return (1);
 }
