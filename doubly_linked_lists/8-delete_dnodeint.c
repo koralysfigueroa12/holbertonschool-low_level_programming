@@ -9,14 +9,14 @@
  */
 static int delete_head(dlistint_t **head)
 {
-    dlistint_t *tmp = *head;
+	dlistint_t *tmp = *head;
 
-    *head = tmp->next;
-    if (*head)
-        (*head)->prev = NULL;
+	*head = tmp->next;
+	if (*head)
+		(*head)->prev = NULL;
 
-    free(tmp);
-    return (1);
+	free(tmp);
+	return (1);
 }
 
 /**
@@ -28,28 +28,28 @@ static int delete_head(dlistint_t **head)
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-    dlistint_t *cur;
-    unsigned int i;
+	dlistint_t *cur;
+	unsigned int i;
 
-    if (head == NULL || *head == NULL)
-        return (-1);
+	if (head == NULL || *head == NULL)
+		return (-1);
 
-    if (index == 0)
-        return (delete_head(head));
+	if (index == 0)
+		return (delete_head(head));
 
-    cur = *head;
-    for (i = 0; cur && i < index; i++)
-        cur = cur->next;
+	cur = *head;
+	for (i = 0; cur && i < index; i++)
+		cur = cur->next;
 
-    if (cur == NULL)
-        return (-1);
+	if (cur == NULL)
+		return (-1);
 
-    if (cur->prev)
-        cur->prev->next = cur->next;
+	if (cur->prev)
+		cur->prev->next = cur->next;
 
-    if (cur->next)
-        cur->next->prev = cur->prev;
+	if (cur->next)
+		cur->next->prev = cur->prev;
 
-    free(cur);
-    return (1);
+	free(cur);
+	return (1);
 }
