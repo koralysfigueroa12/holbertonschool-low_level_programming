@@ -4,11 +4,20 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#define BUFFER_SIZE 1024
+
+/**
+ * main - copies the content of one file to another
+ * @argc: number of arguments
+ * @argv: array of arguments
+ *
+ * Return: 0 on success, exits with codes 97-100 on failure
+ */
 int main(int argc, char *argv[])
 {
     int fd_from, fd_to;
     ssize_t n_read, n_written;
-    char buffer[1024];
+    char buffer[BUFFER_SIZE];
 
     if (argc != 3)
     {
@@ -27,18 +36,21 @@ int main(int argc, char *argv[])
     if (fd_to == -1)
     {
         dprintf(2, "Error: Can't write to %s\n", argv[2]);
-        close(fd_from);
+        if (close(fd_from) == -1)
+            dprintf(2, "Error: Can't close fd %d\n", fd_from), exit(100);
         exit(99);
     }
 
-    while ((n_read = read(fd_from, buffer, 1024)) > 0)
+    while ((n_read = read(fd_from, buffer, BUFFER_SIZE)) > 0)
     {
         n_written = write(fd_to, buffer, n_read);
         if (n_written != n_read)
         {
             dprintf(2, "Error: Can't write to %s\n", argv[2]);
-            close(fd_from);
-            close(fd_to);
+            if (close(fd_from) == -1)
+                dprintf(2, "Error: Can't close fd %d\n", fd_from), exit(100);
+            if (close(fd_to) == -1)
+                dprintf(2, "Error: Can't close fd %d\n", fd_to), exit(100);
             exit(99);
         }
     }
@@ -46,22 +58,18 @@ int main(int argc, char *argv[])
     if (n_read == -1)
     {
         dprintf(2, "Error: Can't read from file %s\n", argv[1]);
-        close(fd_from);
-        close(fd_to);
+        if (close(fd_from) == -1)
+            dprintf(2, "Error: Can't close fd %d\n", fd_from), exit(100);
+        if (close(fd_to) == -1)
+            dprintf(2, "Error: Can't close fd %d\n", fd_to), exit(100);
         exit(98);
     }
 
     if (close(fd_from) == -1)
-    {
-        dprintf(2, "Error: Can't close fd %d\n", fd_from);
-        exit(100);
-    }
-
+        dprintf(2, "Error: Can't close fd %d\n", fd_from), exit(100);
     if (close(fd_to) == -1)
-    {
-        dprintf(2, "Error: Can't close fd %d\n", fd_to);
-        exit(100);
-    }
+        dprintf(2, "Error: Can't close fd %d\n", fd_to), exit(100);
 
-    return 0;
+    return (0);
 }
+
