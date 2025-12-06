@@ -70,5 +70,5 @@ int main(int argc, char *argv[])
     if (close(fd_to) == -1)
         dprintf(2, "Error: Can't close fd %d\n", fd_to), exit(100);
 
-    return (0);
+    return 0;
 }
